@@ -1,7 +1,8 @@
 # devika-naik
 
 Personal site for Devika Naik. Single static page (`index.html`) plus essays
-under `writing/`. Published with GitHub Pages: https://devikan7.github.io/devika-naik/
+under `writing/`. Published with GitHub Pages at https://devikanaik.com
+(custom domain set in `CNAME`; HTTPS enforced).
 
 ## Adding an article
 
