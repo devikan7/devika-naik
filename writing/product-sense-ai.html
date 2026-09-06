@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Developing Product Sense in the World of AI | Devika Naik</title>
+<meta name="description" content="How product managers can develop intuition for AI-powered products — frameworks, mental models, and lessons from shipping ML products at scale.">
+<meta name="theme-color" content="#FAF9F7">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #FAF9F7;
+    --bg-alt: #F1EFEB;
+    --text: #1A1A1A;
+    --text-secondary: #5A5A5A;
+    --accent: #2D5BFF;
+    --accent-soft: rgba(45, 91, 255, 0.08);
+    --accent-glow: rgba(45, 91, 255, 0.18);
+    --border: #E2E0DC;
+    --card-bg: #FFFFFF;
+    --radius: 16px;
+    --radius-sm: 10px;
+    --transition: 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+
+  html { scroll-behavior: smooth; font-size: 16px; }
+  body {
+    font-family: 'Inter', -apple-system, sans-serif;
+    background: var(--bg); color: var(--text);
+    line-height: 1.7; -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+  ::selection { background: var(--accent); color: #fff; }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    background: rgba(250,249,247,0.85);
+    backdrop-filter: blur(20px) saturate(1.8);
+    -webkit-backdrop-filter: blur(20px) saturate(1.8);
+    border-bottom: 1px solid var(--border);
+    transition: var(--transition);
+  }
+  nav.scrolled { background: rgba(250,249,247,0.95); box-shadow: 0 1px 12px rgba(0,0,0,0.04); }
+  .nav-inner {
+    max-width: 1140px; margin: 0 auto; padding: 0 2rem;
+    display: flex; align-items: center; justify-content: space-between; height: 64px;
+  }
+  .nav-logo { font-weight: 700; font-size: 1.1rem; letter-spacing: -0.02em; color: var(--text); text-decoration: none; }
+  .nav-logo span { color: var(--accent); }
+  .back-link { font-size: 0.85rem; font-weight: 500; color: var(--text-secondary); text-decoration: none; display: inline-flex; align-items: center; gap: 0.4rem; transition: color 0.3s; }
+  .back-link:hover { color: var(--accent); }
+  .back-link svg { width: 16px; height: 16px; }
+
+  /* ── ARTICLE ── */
+  .article-hero {
+    padding: 8rem 2rem 3rem;
+    max-width: 760px; margin: 0 auto;
+  }
+  .article-eyebrow {
+    font-size: 0.72rem; font-weight: 600; letter-spacing: 0.15em;
+    text-transform: uppercase; color: var(--accent); margin-bottom: 1.25rem;
+    display: inline-flex; align-items: center; gap: 0.5rem;
+  }
+  .article-eyebrow::before { content: ''; width: 20px; height: 2px; background: var(--accent); }
+  .article-hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.2rem, 4vw, 3rem); font-weight: 500;
+    line-height: 1.2; letter-spacing: -0.03em; margin-bottom: 1.5rem;
+  }
+  .article-meta {
+    display: flex; align-items: center; gap: 1.5rem;
+    font-size: 0.85rem; color: var(--text-secondary);
+    padding-bottom: 2rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .article-meta .read-time {
+    display: inline-flex; align-items: center; gap: 0.35rem;
+  }
+  .article-meta .read-time svg { width: 14px; height: 14px; }
+
+  .article-body {
+    max-width: 760px; margin: 0 auto;
+    padding: 3rem 2rem 4rem;
+  }
+  .article-body h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.6rem; font-weight: 500;
+    letter-spacing: -0.02em; margin: 3rem 0 1.25rem;
+    line-height: 1.3;
+  }
+  .article-body h2:first-child { margin-top: 0; }
+  .article-body h3 {
+    font-size: 1.15rem; font-weight: 600;
+    margin: 2rem 0 0.75rem; line-height: 1.4;
+  }
+  .article-body p {
+    color: var(--text-secondary); font-size: 1.05rem;
+    line-height: 1.9; margin-bottom: 1.5rem;
+  }
+  .article-body strong { color: var(--text); font-weight: 600; }
+  .article-body em { font-style: italic; }
+  .article-body ul, .article-body ol {
+    margin: 1rem 0 1.5rem 1.5rem;
+    color: var(--text-secondary);
+  }
+  .article-body li {
+    font-size: 1.02rem; line-height: 1.85;
+    margin-bottom: 0.5rem;
+  }
+  .article-body li strong { color: var(--text); }
+
+  /* Callout */
+  .callout {
+    background: var(--accent-soft);
+    border-left: 3px solid var(--accent);
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+    padding: 1.5rem 1.75rem;
+    margin: 2rem 0;
+  }
+  .callout p {
+    color: var(--text) !important; font-size: 1rem !important;
+    margin-bottom: 0 !important; font-weight: 500;
+    line-height: 1.75;
+  }
+
+  /* Section divider */
+  .section-break {
+    text-align: center; margin: 3rem 0;
+    color: var(--border); font-size: 1.2rem;
+    letter-spacing: 0.5em;
+  }
+
+  /* ── BACK CTA ── */
+  .article-footer {
+    max-width: 760px; margin: 0 auto;
+    padding: 0 2rem 4rem;
+    display: flex; align-items: center; justify-content: space-between;
+    border-top: 1px solid var(--border);
+    padding-top: 2rem;
+  }
+  .btn-back {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    padding: 0.75rem 1.5rem; border-radius: 50px;
+    font-size: 0.88rem; font-weight: 600; text-decoration: none;
+    background: var(--text); color: #fff; transition: all 0.3s;
+  }
+  .btn-back:hover { background: var(--accent); transform: translateY(-2px); box-shadow: 0 8px 30px var(--accent-glow); }
+  .btn-back svg { width: 14px; height: 14px; }
+
+  .share-links {
+    display: flex; gap: 0.75rem;
+  }
+  .share-chip {
+    display: inline-flex; align-items: center; gap: 0.4rem;
+    padding: 0.6rem 1rem; background: var(--card-bg);
+    border: 1px solid var(--border); border-radius: 50px;
+    text-decoration: none; color: var(--text-secondary);
+    font-size: 0.8rem; font-weight: 500; transition: all 0.3s;
+  }
+  .share-chip:hover { border-color: var(--accent); color: var(--accent); }
+  .share-chip svg { width: 14px; height: 14px; }
+
+  footer { text-align: center; padding: 2rem; border-top: 1px solid var(--border); font-size: 0.8rem; color: var(--text-secondary); }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 600px) {
+    .article-hero { padding: 7rem 1.25rem 2rem; }
+    .article-body { padding: 2rem 1.25rem 3rem; }
+    .article-footer { flex-direction: column; gap: 1.5rem; padding: 2rem 1.25rem 3rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="mainNav">
+  <div class="nav-inner">
+    <a href="../index.html" class="nav-logo">devika<span>.</span></a>
+    <a href="../index.html#writing" class="back-link">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M6.75 15.75L3 12m0 0l3.75-3.75M3 12h18"/></svg>
+      All Posts
+    </a>
+  </div>
+</nav>
+
+<!-- ARTICLE HERO -->
+<header class="article-hero">
+  <div class="article-eyebrow">AI &amp; Product</div>
+  <h1>Developing Product Sense in the World of AI</h1>
+  <div class="article-meta">
+    <span>Devika Naik</span>
+    <span>&middot;</span>
+    <span>Feb 2026</span>
+    <span>&middot;</span>
+    <span class="read-time">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+      8 min read
+    </span>
+  </div>
+</header>
+
+<!-- ARTICLE BODY -->
+<article class="article-body">
+
+<h2>The product sense gap</h2>
+
+<p>Every product manager has been there: you're in a roadmap review, an engineer presents an ML model that improves some metric by 12%, and someone asks, <em>"But should we ship it?"</em> The room goes quiet.</p>
+
+<p>This is the product sense gap in AI. Traditional product intuition was built on decades of software patterns &mdash; if a user clicks a button, something happens. Cause and effect are visible, testable, and explainable. But AI products break this mental model. Outputs are probabilistic. Edge cases are unpredictable. And the gap between a model that works in a notebook and a product that works in the real world is enormous.</p>
+
+<p>After spending years shipping AI-powered products at Google and building ML-driven features at Deutsche Bank, I've developed a framework for how product managers can build genuine product sense for AI &mdash; not just the technical literacy to read a model card, but the intuition to know when an AI feature is ready for users and when it isn't.</p>
+
+<h2>1. Think in distributions, not determinism</h2>
+
+<p>The single biggest mindset shift for PMs working with AI is moving from deterministic to probabilistic thinking. In traditional software, you can test every path. In AI, <strong>you're shipping a system that will be wrong some percentage of the time, by design</strong>.</p>
+
+<p>Product sense in AI means developing intuition for:</p>
+<ul>
+  <li><strong>Where accuracy matters most</strong> &mdash; a 95% accurate spam filter is fine; a 95% accurate medical diagnosis tool is not. The same model accuracy means completely different things depending on the cost of being wrong.</li>
+  <li><strong>Which errors are recoverable</strong> &mdash; a bad recommendation on a feed is a mild annoyance. A bad recommendation in a financial product can cost someone their savings. Design for the error, not just the happy path.</li>
+  <li><strong>When "good enough" is actually good enough</strong> &mdash; I've watched teams delay launches by months chasing the last 2% of accuracy, while a competitor shipped at 90% and won the market. The product question is never "how accurate is the model?" &mdash; it's "is this accurate enough for users to trust it and come back?"</li>
+</ul>
+
+<div class="callout">
+  <p>The best AI PMs I've worked with have a mental model for acceptable error rates in different contexts, before they ever see the model metrics. They know the threshold intuitively.</p>
+</div>
+
+<h2>2. The evaluation trap</h2>
+
+<p>Here's something that surprises non-ML PMs: <strong>evaluating an AI product is harder than building it</strong>. Seriously. You can train a model in a weekend. Figuring out if it actually works for users in production is a months-long problem.</p>
+
+<p>Traditional A/B testing works for "did users click more?" But AI products need a different evaluation lens:</p>
+
+<ul>
+  <li><strong>Offline metrics vs. online behavior</strong> &mdash; a model that scores well on a holdout set might perform terribly in production because the data distribution shifted. I've seen models with excellent precision/recall metrics that users hated because the errors clustered in visible, embarrassing ways.</li>
+  <li><strong>Leading vs. lagging signals</strong> &mdash; engagement might spike because an AI recommendation is novel and surprising, then crash two weeks later when users realize it's not actually useful. Look for retention and repeat usage, not first-day excitement.</li>
+  <li><strong>The silent failure problem</strong> &mdash; when a traditional feature breaks, users complain. When an AI feature degrades, it just slowly becomes less useful. Nobody files a bug report that says "my recommendations seem slightly less relevant this week." You need monitoring for model drift, not just error rates.</li>
+</ul>
+
+<h2>3. Ship the interface, not just the model</h2>
+
+<p>One of the most common mistakes I see in AI product development is treating the model as the product. <strong>The model is not the product. The interface between the model and the user is the product.</strong></p>
+
+<p>This means:</p>
+
+<ul>
+  <li><strong>Transparency over magic</strong> &mdash; users trust AI more when they understand why it made a recommendation. At Google, I learned that showing users even a simple "Because you searched for X" alongside an ad increased both trust and engagement. The model was identical; the interface changed everything.</li>
+  <li><strong>Graceful degradation</strong> &mdash; what happens when the model is uncertain? The worst AI products show nothing. The best ones show something useful with appropriate hedging. "We're not sure, but based on similar cases..." is infinitely better than a blank screen or a confidently wrong answer.</li>
+  <li><strong>Progressive disclosure of intelligence</strong> &mdash; don't show users everything the model knows on day one. Start simple, let users pull for more depth when they want it. A stock analysis tool that opens with a simple Buy/Hold/Sell verdict and lets users drill into the evidence is more useful than one that dumps the entire analysis on screen.</li>
+</ul>
+
+<div class="callout">
+  <p>Ask yourself: if you replaced the AI with a human expert, how would that expert communicate uncertainty? How would they explain their reasoning? Design your AI interface the same way.</p>
+</div>
+
+<h2>4. Build for the loop, not the moment</h2>
+
+<p>AI products improve with data. This is the single biggest strategic advantage of AI &mdash; and the most underexploited one. Product sense in AI means designing feedback loops from day one.</p>
+
+<p>Every interaction is training data. Every user correction is a label. <strong>The product should get smarter with every use</strong>, and users should be able to feel it getting smarter.</p>
+
+<p>The best AI product loops I've built follow this pattern:</p>
+
+<ol>
+  <li><strong>Model generates an output</strong> (recommendation, prediction, analysis)</li>
+  <li><strong>User takes an action</strong> (clicks, ignores, corrects, overrides)</li>
+  <li><strong>Action becomes signal</strong> (positive/negative implicit feedback)</li>
+  <li><strong>Signal improves the model</strong> (retraining, fine-tuning, or rule adjustment)</li>
+  <li><strong>User notices improvement</strong> (the crucial step most teams skip)</li>
+</ol>
+
+<p>That last step is the difference between an AI product that retains and one that churns. Users need to feel the system learning. This might be as simple as "We noticed you always skip jazz recommendations &mdash; we've updated your preferences" or as sophisticated as a visible accuracy score that improves over time.</p>
+
+<h2>5. Know when AI is the wrong answer</h2>
+
+<p>This might be the most counterintuitive point, but <strong>the best AI product sense includes knowing when not to use AI</strong>.</p>
+
+<p>I've seen teams spend six months building an ML model for a problem that a SQL query could solve. I've seen recommendation engines built for products with 200 users and 50 items &mdash; where a hand-curated list would outperform any model. I've seen AI features added to products purely because investors wanted to hear the word "AI" in the pitch.</p>
+
+<p>AI is the right tool when:</p>
+
+<ul>
+  <li>The problem involves pattern recognition at a scale humans can't handle</li>
+  <li>The data is rich, plentiful, and continuously generated</li>
+  <li>The cost of errors is manageable and the value of getting it right is high</li>
+  <li>The feedback loop is tight enough for the model to improve</li>
+</ul>
+
+<p>AI is the wrong tool when:</p>
+
+<ul>
+  <li>Simple rules or heuristics would get you 80% of the way there</li>
+  <li>You don't have enough data to train a meaningful model</li>
+  <li>The problem requires explainability that current models can't provide</li>
+  <li>The stakes are too high for probabilistic errors</li>
+</ul>
+
+<div class="section-break">&bull; &bull; &bull;</div>
+
+<h2>Building the muscle</h2>
+
+<p>Product sense isn't a skill you read about and suddenly have. It's a muscle you build through shipping, through watching users interact with your product, and through developing pattern recognition over hundreds of decisions.</p>
+
+<p>For AI products specifically, the muscle comes from:</p>
+
+<ul>
+  <li><strong>Reviewing model outputs daily</strong> &mdash; not metrics dashboards, actual outputs. Read the recommendations. Look at the predictions. Develop a feel for when the model is being useful versus when it's confidently hallucinating.</li>
+  <li><strong>Talking to users about their mental model</strong> &mdash; not "do you like this feature?" but "what did you expect to see here?" and "when you saw this recommendation, what did you think?" Users' mental models of how the AI works (even when wrong) determine whether they trust it.</li>
+  <li><strong>Building things yourself</strong> &mdash; you don't need to be an ML engineer, but you should be able to fine-tune a model, run an evaluation, and understand why a model makes the predictions it does. The PMs who ship the best AI products are the ones who've gotten their hands dirty with the actual technology.</li>
+</ul>
+
+<p>The world of AI products is still young enough that the playbooks are being written in real time. The PMs who develop genuine product sense for AI &mdash; not just technical literacy, but real intuition &mdash; will be the ones who define how the next generation of products work.</p>
+
+<p>And that intuition doesn't come from reading papers or attending conferences. It comes from shipping, from failing, and from paying close enough attention to know why.</p>
+
+</article>
+
+<!-- FOOTER -->
+<div class="article-footer">
+  <a href="../index.html#writing" class="btn-back">
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M6.75 15.75L3 12m0 0l3.75-3.75M3 12h18"/></svg>
+    All Posts
+  </a>
+  <div class="share-links">
+    <a href="https://twitter.com/intent/tweet?text=Developing+Product+Sense+in+the+World+of+AI&url=" target="_blank" rel="noopener" class="share-chip">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+      Share
+    </a>
+    <a href="https://www.linkedin.com/sharing/share-offsite/?url=" target="_blank" rel="noopener" class="share-chip">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+      LinkedIn
+    </a>
+  </div>
+</div>
+
+<footer><p>&copy; 2026 Devika Naik. Crafted in New York.</p></footer>
+
+<script>
+  var mainNav = document.getElementById('mainNav');
+  window.addEventListener('scroll', function() { mainNav.classList.toggle('scrolled', window.scrollY > 40); });
+</script>
+</body>
+</html>

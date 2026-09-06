@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>How I Use AI Across My Entire PM Workflow | Devika Naik</title>
+<meta name="description" content="The exact AI tools I use as a PM — from market research to quick prototyping to shipping for feedback. A personal walkthrough of my full workflow.">
+<meta name="theme-color" content="#FAF9F7">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #FAF9F7;
+    --bg-alt: #F1EFEB;
+    --text: #1A1A1A;
+    --text-secondary: #5A5A5A;
+    --accent: #2D5BFF;
+    --accent-soft: rgba(45, 91, 255, 0.08);
+    --accent-glow: rgba(45, 91, 255, 0.18);
+    --border: #E2E0DC;
+    --card-bg: #FFFFFF;
+    --radius: 16px;
+    --radius-sm: 10px;
+    --transition: 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+
+  html { scroll-behavior: smooth; font-size: 16px; }
+  body {
+    font-family: 'Inter', -apple-system, sans-serif;
+    background: var(--bg); color: var(--text);
+    line-height: 1.7; -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+  ::selection { background: var(--accent); color: #fff; }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    background: rgba(250,249,247,0.85);
+    backdrop-filter: blur(20px) saturate(1.8);
+    -webkit-backdrop-filter: blur(20px) saturate(1.8);
+    border-bottom: 1px solid var(--border);
+    transition: var(--transition);
+  }
+  nav.scrolled { background: rgba(250,249,247,0.95); box-shadow: 0 1px 12px rgba(0,0,0,0.04); }
+  .nav-inner {
+    max-width: 1140px; margin: 0 auto; padding: 0 2rem;
+    display: flex; align-items: center; justify-content: space-between; height: 64px;
+  }
+  .nav-logo { font-weight: 700; font-size: 1.1rem; letter-spacing: -0.02em; color: var(--text); text-decoration: none; }
+  .nav-logo span { color: var(--accent); }
+  .back-link { font-size: 0.85rem; font-weight: 500; color: var(--text-secondary); text-decoration: none; display: inline-flex; align-items: center; gap: 0.4rem; transition: color 0.3s; }
+  .back-link:hover { color: var(--accent); }
+  .back-link svg { width: 16px; height: 16px; }
+
+  /* ── ARTICLE ── */
+  .article-hero {
+    padding: 8rem 2rem 3rem;
+    max-width: 760px; margin: 0 auto;
+  }
+  .article-eyebrow {
+    font-size: 0.72rem; font-weight: 600; letter-spacing: 0.15em;
+    text-transform: uppercase; color: var(--accent); margin-bottom: 1.25rem;
+    display: inline-flex; align-items: center; gap: 0.5rem;
+  }
+  .article-eyebrow::before { content: ''; width: 20px; height: 2px; background: var(--accent); }
+  .article-hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.2rem, 4vw, 3rem); font-weight: 500;
+    line-height: 1.2; letter-spacing: -0.03em; margin-bottom: 1.5rem;
+  }
+  .article-meta {
+    display: flex; align-items: center; gap: 1.5rem;
+    font-size: 0.85rem; color: var(--text-secondary);
+    padding-bottom: 2rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .article-meta .read-time {
+    display: inline-flex; align-items: center; gap: 0.35rem;
+  }
+  .article-meta .read-time svg { width: 14px; height: 14px; }
+
+  .article-body {
+    max-width: 760px; margin: 0 auto;
+    padding: 3rem 2rem 4rem;
+  }
+  .article-body h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.6rem; font-weight: 500;
+    letter-spacing: -0.02em; margin: 3rem 0 1.25rem;
+    line-height: 1.3;
+  }
+  .article-body h2:first-child { margin-top: 0; }
+  .article-body h3 {
+    font-size: 1.15rem; font-weight: 600;
+    margin: 2rem 0 0.75rem; line-height: 1.4;
+  }
+  .article-body p {
+    color: var(--text-secondary); font-size: 1.05rem;
+    line-height: 1.9; margin-bottom: 1.5rem;
+  }
+  .article-body strong { color: var(--text); font-weight: 600; }
+  .article-body em { font-style: italic; }
+  .article-body ul, .article-body ol {
+    margin: 1rem 0 1.5rem 1.5rem;
+    color: var(--text-secondary);
+  }
+  .article-body li {
+    font-size: 1.02rem; line-height: 1.85;
+    margin-bottom: 0.5rem;
+  }
+  .article-body li strong { color: var(--text); }
+
+  /* Tool card */
+  .tool-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.75rem;
+    margin: 2rem 0;
+  }
+  .tool-card-header {
+    display: flex; align-items: center; gap: 0.75rem;
+    margin-bottom: 0.75rem;
+  }
+  .tool-badge {
+    font-size: 0.7rem; font-weight: 600; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--accent);
+    background: var(--accent-soft); border-radius: 50px;
+    padding: 0.2rem 0.65rem;
+  }
+  .tool-card-header h3 {
+    font-size: 1.1rem; font-weight: 600; margin: 0;
+  }
+  .tool-card p {
+    color: var(--text-secondary); font-size: 1rem;
+    line-height: 1.8; margin-bottom: 0.75rem;
+  }
+  .tool-card p:last-child { margin-bottom: 0; }
+  .tool-use {
+    font-size: 0.88rem; font-weight: 500; color: var(--text);
+    background: var(--bg-alt); border-radius: var(--radius-sm);
+    padding: 0.6rem 1rem; display: inline-block; margin-top: 0.5rem;
+  }
+
+  /* Callout */
+  .callout {
+    background: var(--accent-soft);
+    border-left: 3px solid var(--accent);
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+    padding: 1.5rem 1.75rem;
+    margin: 2rem 0;
+  }
+  .callout p {
+    color: var(--text) !important; font-size: 1rem !important;
+    margin-bottom: 0 !important; font-weight: 500;
+    line-height: 1.75;
+  }
+
+  /* Workflow step */
+  .workflow-steps {
+    margin: 1.5rem 0 2rem;
+    counter-reset: step-counter;
+  }
+  .workflow-step {
+    display: flex; gap: 1.25rem; margin-bottom: 1.5rem;
+    align-items: flex-start;
+  }
+  .step-num {
+    flex-shrink: 0;
+    width: 32px; height: 32px;
+    background: var(--accent); color: #fff;
+    border-radius: 50%; font-size: 0.85rem; font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+    margin-top: 0.15rem;
+  }
+  .step-body h4 {
+    font-size: 1rem; font-weight: 600; margin-bottom: 0.3rem;
+  }
+  .step-body p {
+    font-size: 0.97rem; color: var(--text-secondary);
+    line-height: 1.75; margin-bottom: 0;
+  }
+
+  /* Section divider */
+  .section-break {
+    text-align: center; margin: 3rem 0;
+    color: var(--border); font-size: 1.2rem;
+    letter-spacing: 0.5em;
+  }
+
+  /* ── BACK CTA ── */
+  .article-footer {
+    max-width: 760px; margin: 0 auto;
+    padding: 0 2rem 4rem;
+    display: flex; align-items: center; justify-content: space-between;
+    border-top: 1px solid var(--border);
+    padding-top: 2rem;
+  }
+  .btn-back {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    padding: 0.75rem 1.5rem; border-radius: 50px;
+    font-size: 0.88rem; font-weight: 600; text-decoration: none;
+    background: var(--text); color: #fff; transition: all 0.3s;
+  }
+  .btn-back:hover { background: var(--accent); transform: translateY(-2px); box-shadow: 0 8px 30px var(--accent-glow); }
+  .btn-back svg { width: 14px; height: 14px; }
+
+  .share-links {
+    display: flex; gap: 0.75rem;
+  }
+  .share-chip {
+    display: inline-flex; align-items: center; gap: 0.4rem;
+    padding: 0.6rem 1rem; background: var(--card-bg);
+    border: 1px solid var(--border); border-radius: 50px;
+    text-decoration: none; color: var(--text-secondary);
+    font-size: 0.8rem; font-weight: 500; transition: all 0.3s;
+  }
+  .share-chip:hover { border-color: var(--accent); color: var(--accent); }
+  .share-chip svg { width: 14px; height: 14px; }
+
+  footer { text-align: center; padding: 2rem; border-top: 1px solid var(--border); font-size: 0.8rem; color: var(--text-secondary); }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 600px) {
+    .article-hero { padding: 7rem 1.25rem 2rem; }
+    .article-body { padding: 2rem 1.25rem 3rem; }
+    .article-footer { flex-direction: column; gap: 1.5rem; padding: 2rem 1.25rem 3rem; }
+    .workflow-step { flex-direction: column; gap: 0.75rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="mainNav">
+  <div class="nav-inner">
+    <a href="../index.html" class="nav-logo">devika<span>.</span></a>
+    <a href="../index.html#writing" class="back-link">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M6.75 15.75L3 12m0 0l3.75-3.75M3 12h18"/></svg>
+      All Posts
+    </a>
+  </div>
+</nav>
+
+<!-- ARTICLE HERO -->
+<header class="article-hero">
+  <div class="article-eyebrow">AI &amp; Productivity</div>
+  <h1>How I Use AI Across My Entire PM Workflow</h1>
+  <div class="article-meta">
+    <span>Devika Naik</span>
+    <span>&middot;</span>
+    <span>Jan 2026</span>
+    <span>&middot;</span>
+    <span class="read-time">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+      11 min read
+    </span>
+  </div>
+</header>
+
+<!-- ARTICLE BODY -->
+<article class="article-body">
+
+<h2>The honest truth about AI and productivity</h2>
+
+<p>I'll be straight with you: most writing about "AI for PMs" is too vague to be useful. Use ChatGPT for your PRDs! Summarize meetings with Otter! Fine, but that barely scratches the surface.</p>
+
+<p>What I want to share is something more specific: over the last year, I've rebuilt my entire PM workflow around a set of AI tools &mdash; and it has genuinely compressed what used to take me weeks into days. Not because the tools are magic, but because I've figured out <em>where exactly</em> they unlock leverage in the product development cycle.</p>
+
+<p>I run a personal workflow that goes: <strong>market research &rarr; idea evaluation &rarr; quick prototyping &rarr; launch for feedback</strong>. Every stage used to have friction. Now most of that friction is gone. This post is a walkthrough of the tools I use at each stage, why I picked them, and how I actually use them &mdash; not the idealized version, but the messy real one.</p>
+
+<h2>My workflow, end to end</h2>
+
+<p>Before I get into tools, let me quickly map the workflow so the rest of this makes sense. When I'm exploring a new product idea or feature, I move through four stages:</p>
+
+<div class="workflow-steps">
+  <div class="workflow-step">
+    <div class="step-num">1</div>
+    <div class="step-body">
+      <h4>Market research</h4>
+      <p>Understanding the space &mdash; who's in it, what users are saying, what's missing, what the opportunity size looks like.</p>
+    </div>
+  </div>
+  <div class="workflow-step">
+    <div class="step-num">2</div>
+    <div class="step-body">
+      <h4>Idea evaluation</h4>
+      <p>Stress-testing the concept &mdash; surface the counterarguments, check assumptions, size the market, build a first-pass business case.</p>
+    </div>
+  </div>
+  <div class="workflow-step">
+    <div class="step-num">3</div>
+    <div class="step-body">
+      <h4>Quick prototyping</h4>
+      <p>Getting something tangible &mdash; a wireframe, a clickable mock, or even a functional prototype &mdash; fast enough to show people before you've convinced yourself you're right.</p>
+    </div>
+  </div>
+  <div class="workflow-step">
+    <div class="step-num">4</div>
+    <div class="step-body">
+      <h4>Launch and learn</h4>
+      <p>Shipping a minimal version, gathering real feedback, and using it to decide what to build next.</p>
+    </div>
+  </div>
+</div>
+
+<p>AI has touched every single one of these stages. Here's how.</p>
+
+<div class="section-break">&bull; &bull; &bull;</div>
+
+<h2>Stage 1: Market research</h2>
+
+<p>Market research used to be my least favourite part of the job. Not because it's unimportant &mdash; it's arguably the most important &mdash; but because it was slow, repetitive, and involved a lot of tabs. Hours of Googling, reading G2 reviews, scanning Reddit threads, digging through App Store comments, synthesising it all into a coherent picture. Then doing it again when something changed.</p>
+
+<p>Now I do most of this in a fraction of the time, and the output is sharper.</p>
+
+<div class="tool-card">
+  <div class="tool-card-header">
+    <span class="tool-badge">Research</span>
+    <h3>Perplexity AI</h3>
+  </div>
+  <p>Perplexity is where I start every research session. Think of it as a search engine that actually synthesises what it finds, with citations you can verify. Where Google gives me ten blue links to click through, Perplexity gives me a structured answer with sources &mdash; and it's fast enough that I can iterate on the query in real time.</p>
+  <p>My typical session: I'll open with a broad question like <em>"What are the main pain points users have with B2B expense management tools?"</em> Then I'll drill down &mdash; <em>"What specifically do users complain about in Concur reviews?"</em> &mdash; and synthesise across sources in minutes. For competitive landscapes, it's especially good: I can get a current-state snapshot of a market segment without spending half a day building a spreadsheet.</p>
+  <p><strong>What it doesn't replace:</strong> actual user interviews. Perplexity can tell me what people say publicly. It cannot tell me why. User calls still matter.</p>
+  <span class="tool-use">How I use it: Initial market scans, competitor analysis, surfacing user sentiment from reviews and forums</span>
+</div>
+
+<div class="tool-card">
+  <div class="tool-card-header">
+    <span class="tool-badge">Research</span>
+    <h3>Claude (Anthropic)</h3>
+  </div>
+  <p>Once I have raw material &mdash; a batch of user reviews, a competitor feature list, a messy set of notes from discovery calls &mdash; I bring it into Claude for synthesis and sense-making. Claude is better than any other model I've used at reading a large chunk of text and extracting structured insight from it without hallucinating things that aren't there.</p>
+  <p>My go-to prompt pattern: I dump 20&ndash;30 user reviews into the chat and ask it to identify the top five unmet needs, grouped by user type. Then I ask it to challenge its own analysis: <em>"What might this be missing? What user segments might feel differently?"</em> That second step is where you catch the blind spots.</p>
+  <p><strong>One thing I've learned:</strong> the better your input, the better your output. I've started taking better notes in user interviews specifically because I know I'll be feeding them into Claude afterwards. The tool has made me a more disciplined researcher, not a lazier one.</p>
+  <span class="tool-use">How I use it: Synthesising qualitative data, stress-testing research conclusions, writing structured research readouts</span>
+</div>
+
+<div class="tool-card">
+  <div class="tool-card-header">
+    <span class="tool-badge">Research</span>
+    <h3>Gemini Deep Research</h3>
+  </div>
+  <p>For longer, more formal research tasks &mdash; market sizing, industry trend analysis, regulatory landscape checks &mdash; I use Gemini's Deep Research mode. It runs a much longer agentic search process and produces a properly structured research report, not just a summary. Think of it as the difference between a quick search and commissioning an analyst brief.</p>
+  <p>I used this recently to understand the landscape of AI-powered financial planning tools in Southeast Asia before a strategy session. The report it produced covered market size estimates, key players, regulatory nuances by country, and emerging user behaviour patterns. It took me ten minutes to prompt and read. The equivalent manual effort would have taken me a day.</p>
+  <span class="tool-use">How I use it: Deep-dive market reports, industry landscape snapshots before strategy sessions</span>
+</div>
+
+<div class="section-break">&bull; &bull; &bull;</div>
+
+<h2>Stage 2: Evaluating ideas</h2>
+
+<p>This is where I think AI is most underrated as a PM tool. Not for generating ideas &mdash; everyone knows you can use ChatGPT for brainstorming &mdash; but for <em>killing bad ideas faster</em>.</p>
+
+<p>The biggest waste of time in product development isn't building the wrong thing. It's building the wrong thing <em>when you could have figured out it was wrong before you started</em>. AI makes the pre-mortem stage much cheaper.</p>
+
+<div class="tool-card">
+  <div class="tool-card-header">
+    <span class="tool-badge">Evaluation</span>
+    <h3>Claude as a devil's advocate</h3>
+  </div>
+  <p>I've developed a specific ritual for evaluating new feature ideas. I write a one-page internal pitch &mdash; problem, proposed solution, target user, why now &mdash; and then I ask Claude to argue against it as hard as it can. Not just surface-level concerns, but specifically: <em>"What assumptions am I making that could be wrong? What are the strongest arguments a competitor or investor would make against this?"</em></p>
+  <p>This sounds simple, and it is. But it's remarkably effective at surfacing blind spots before they become expensive. The best counterargument I've ever received from this process saved us from over-engineering a personalisation feature that our users would never have noticed &mdash; because the underlying problem was actually about onboarding, not preferences.</p>
+  <p>I also use Claude to build rough business cases. I feed it what I know about the addressable market, our current conversion funnel, and estimated development cost, and ask it to model a simple impact estimate. It's not a financial model &mdash; it's a sanity check. Good enough to decide whether the idea deserves a proper analysis or should be shelved.</p>
+  <span class="tool-use">How I use it: Pre-mortem analysis, assumption stress-testing, rough opportunity sizing</span>
+</div>
+
+<div class="tool-card">
+  <div class="tool-card-header">
+    <span class="tool-badge">Evaluation</span>
+    <h3>NotebookLM (Google)</h3>
+  </div>
+  <p>When an idea is more complex and I need to synthesise across multiple inputs &mdash; user research, market analysis, competitor teardowns, stakeholder feedback &mdash; I put everything into NotebookLM and have a conversation with the material. It lets me ask questions across all my sources simultaneously: <em>"Based on everything in here, where is the clearest user pain that isn't addressed by any existing solution?"</em></p>
+  <p>This is particularly useful before a big strategy session. I'll upload all my prep documents &mdash; sometimes 10&ndash;15 files &mdash; and use it to generate a structured briefing document for the leadership team. The briefing practically writes itself once the sources are in.</p>
+  <span class="tool-use">How I use it: Synthesising multi-source research before strategy sessions, generating briefing documents</span>
+</div>
+
+<div class="callout">
+  <p>The goal of Stage 2 isn't to confirm that your idea is good. It's to efficiently find out if it's bad. AI dramatically lowers the cost of finding out you're wrong early &mdash; which is always better than finding out after you've shipped.</p>
+</div>
+
+<div class="section-break">&bull; &bull; &bull;</div>
+
+<h2>Stage 3: Quick prototyping</h2>
+
+<p>This is the stage that has changed most dramatically in the last twelve months. The gap between "I have a product idea" and "I have something tangible to show people" has collapsed. What used to take a designer two weeks and a developer another two weeks to produce a clickable prototype now takes me two to three days, often working solo.</p>
+
+<p>I want to be specific here, because there's a big difference between wireframing tools, design tools, and tools that can actually generate working code. I use all three, at different stages.</p>
+
+<div class="tool-card">
+  <div class="tool-card-header">
+    <span class="tool-badge">Design</span>
+    <h3>Figma + FigJam with AI plugins</h3>
+  </div>
+  <p>Figma is still my primary design tool, but the way I use it has changed. For early-stage ideation, I start in FigJam &mdash; it's looser, faster, and great for mapping user flows and rough screen layouts before you commit to anything. I use it to sketch the core flow in an afternoon, share the link with a couple of trusted colleagues, and collect async comments before moving to higher fidelity.</p>
+  <p>For Figma itself, plugins like <strong>Wireframe Designer</strong> and <strong>Autoflow</strong> have meaningfully sped up the wireframing phase. I can generate a set of baseline wireframes for a standard pattern (settings page, onboarding flow, empty states) and then customise them rather than starting from scratch every time.</p>
+  <p>The bigger unlock has been using Figma's Dev Mode in combination with AI-assisted handoff. Engineers spend far less time asking "what does this state look like?" because the spec is already there.</p>
+  <span class="tool-use">How I use it: User flow mapping, mid-fidelity wireframes, async design reviews before moving to high-fidelity</span>
+</div>
+
+<div class="tool-card">
+  <div class="tool-card-header">
+    <span class="tool-badge">Design</span>
+    <h3>v0 by Vercel</h3>
+  </div>
+  <p>v0 is the tool I reach for when I want to go from wireframe to something that looks like a real product, fast. You describe a UI component or a full page in natural language, and it generates clean React and Tailwind code that you can immediately preview in the browser. The output quality is genuinely impressive &mdash; better than most junior designers, honestly, for standard UI patterns.</p>
+  <p>My workflow: I take my Figma wireframes, describe each key screen to v0, and get working HTML/React components back. I then assemble them into a clickable prototype using a simple Next.js scaffold. This produces something that looks and feels like a real product, not a Figma mock &mdash; which makes a huge difference in how users interact with it during testing.</p>
+  <p>I used this approach to build a prototype for an AI-assisted financial insights feature. Total time from wireframe to interactive prototype: about six hours. The feedback session I ran with it surfaced three critical navigation problems that would never have come up in a Figma prototype, because users were actually clicking through a live interface.</p>
+  <span class="tool-use">How I use it: Converting wireframes to working UI components; building realistic interactive prototypes for user testing</span>
+</div>
+
+<div class="tool-card">
+  <div class="tool-card-header">
+    <span class="tool-badge">Design &amp; Build</span>
+    <h3>Cursor</h3>
+  </div>
+  <p>Cursor is an AI-native code editor, and it's the reason I can build functional prototypes without waiting for engineering bandwidth. I'm not an engineer &mdash; I can write basic HTML, CSS, and a little JavaScript, but I'm not shipping production code. Cursor lets me operate several levels above my actual coding ability by providing intelligent suggestions, explaining what code does, and helping me debug when things break.</p>
+  <p>My typical use: I'll take the components v0 generated, open them in Cursor, and wire them together into a functioning prototype with real navigation and state. If I want to add a simple data table with mock data, or a toggle that changes the view, I describe what I want in natural language and Cursor writes the code. I review it, ask it to explain anything I don't understand, and iterate.</p>
+  <p>This is not the same as engineering. I'm not writing scalable, production-ready code. But for a prototype that needs to survive five user sessions? It's more than good enough, and it's built in a day instead of a sprint.</p>
+  <span class="tool-use">How I use it: Building functional prototypes, adding interactivity to v0 components, quick data visualisation experiments</span>
+</div>
+
+<div class="tool-card">
+  <div class="tool-card-header">
+    <span class="tool-badge">Design &amp; Build</span>
+    <h3>OpenAI Codex</h3>
+  </div>
+  <p>Codex is a legitimate alternative to Cursor, and several PMs I know use it exclusively. The output quality is genuinely comparable &mdash; both can take you from a plain-English description to working code in seconds, and for straightforward UI components there's not much between them.</p>
+  <p>Where I find them different is in the back-and-forth. When something breaks or I want to change direction mid-prototype, I find Claude better at holding context across a long session and explaining <em>why</em> it made the choices it did. That matters when you're not a trained engineer and actually want to understand the code, not just run it. Codex tends to produce the answer; Claude tends to produce the answer <em>and</em> walk you through it, which is more useful when you're building at the edge of your technical comfort zone.</p>
+  <p>If you're already in the OpenAI ecosystem, Codex is a fine choice. I just keep returning to Claude for that teachability.</p>
+  <span class="tool-use">How I use it: Occasional cross-check when I want a second model's take on a tricky component</span>
+</div>
+
+<div class="tool-card">
+  <div class="tool-card-header">
+    <span class="tool-badge">No-code</span>
+    <h3>Lovable</h3>
+  </div>
+  <p>When I want to skip even Cursor's lightweight coding and go directly from idea to working app, Lovable is my shortcut. It's a no-code/low-code AI tool that builds full web applications from a description. You can connect it to Supabase for a real backend, add authentication, and have something that a user can actually sign up for and use &mdash; not just click through.</p>
+  <p>I've used Lovable to spin up a functional beta in less than a day: real sign-up flow, basic CRUD operations, a simple dashboard. Nothing scalable, but entirely real. I then run that beta with ten to fifteen early users for two weeks, collect structured feedback, and use that to write the actual product spec for engineering. The quality of feedback I get from a real (if rough) product is an order of magnitude better than feedback on a mockup.</p>
+  <span class="tool-use">How I use it: Building lightweight functional betas for early user validation; replacing "slide deck pitch" with "actually try it"</span>
+</div>
+
+<div class="section-break">&bull; &bull; &bull;</div>
+
+<h2>Stage 4: Launch and learn</h2>
+
+<p>Getting something in front of users is only half the job. The other half is interpreting what you learn. This is where the feedback loop closes &mdash; and where AI helps me move faster from raw feedback to clear decisions.</p>
+
+<div class="tool-card">
+  <div class="tool-card-header">
+    <span class="tool-badge">Research</span>
+    <h3>Dovetail</h3>
+  </div>
+  <p>Dovetail is my research repository. Every user interview gets transcribed and uploaded here. Every usability test recording goes in. Every batch of survey responses. The platform uses AI to surface themes and patterns across your research &mdash; but more importantly, it makes your research searchable and shareable, so it doesn't disappear into someone's Google Drive three months later.</p>
+  <p>After a round of user testing with a prototype, I'll use Dovetail to tag key moments in the recordings, pull out quotes by theme, and generate a research readout in half the time it used to take. The themes it surfaces aren't always right &mdash; I always review and edit the AI-generated analysis &mdash; but it's an excellent starting point that usually captures the 80% that's obvious and lets me focus my attention on the nuanced 20%.</p>
+  <span class="tool-use">How I use it: Organising and analysing qualitative feedback from user interviews and usability tests</span>
+</div>
+
+<div class="tool-card">
+  <div class="tool-card-header">
+    <span class="tool-badge">Writing</span>
+    <h3>Claude for writing and communication</h3>
+  </div>
+  <p>Once I have research insights, I need to communicate them &mdash; to engineers, to leadership, to stakeholders who weren't in the room. This is where Claude shows up again. I use it to turn a rough outline and a set of bullet points into a polished PRD, a one-pager, or a strategy memo.</p>
+  <p>My process: I write the core content myself &mdash; the arguments, the data, the recommendations. Then I ask Claude to improve the structure, tighten the prose, and flag anything that's unclear or unsupported. I treat it like a very capable editor, not a ghostwriter. The thinking is mine; the polish is collaborative.</p>
+  <p><strong>The part I never skip:</strong> reading the final version aloud before sending. AI-generated prose can sound fluent but feel slightly off &mdash; too formal, too hedged, or subtly not like you. Reading it aloud catches those moments instantly.</p>
+  <span class="tool-use">How I use it: PRDs, strategy memos, research readouts, stakeholder updates, release notes</span>
+</div>
+
+<div class="callout">
+  <p>The most important thing about Stage 4 is speed &mdash; specifically, the speed at which you can go from "we shipped something" to "we know what to do next." AI doesn't just help you move faster inside each step. It compresses the time between steps, which is where most of the delay actually lives.</p>
+</div>
+
+<div class="section-break">&bull; &bull; &bull;</div>
+
+<h2>What this actually looks like end to end</h2>
+
+<p>Let me make this concrete. Here's a recent example: I had a rough idea for a feature that would surface spending anomalies for business users &mdash; something like "your SaaS spend spiked 40% this month, here's what changed." A meaningful idea, but I'd heard similar ideas die in roadmap reviews before.</p>
+
+<p>Here's how the full cycle ran with AI:</p>
+
+<ul>
+  <li><strong>Day 1, morning:</strong> Perplexity + Gemini Deep Research to understand the competitive landscape. Thirty minutes. Found three competitors doing something adjacent, none doing it quite the way I had in mind.</li>
+  <li><strong>Day 1, afternoon:</strong> Claude to stress-test the idea. Identified two assumptions I couldn't defend. Refined the concept before talking to anyone.</li>
+  <li><strong>Day 2:</strong> FigJam to map the core user flow. Took the flow into v0 to generate the key UI components. Assembled them in Cursor into a clickable prototype. End of day, I had something I could actually share.</li>
+  <li><strong>Day 3:</strong> Five informal user sessions with the prototype. Recorded everything. Uploaded to Dovetail. Themes: the anomaly detection was interesting, but users cared far more about the recommended action ("what should I do about this?") than the anomaly itself.</li>
+  <li><strong>Day 4:</strong> Rewrote the concept around actionable recommendations, not just anomaly alerts. Used Lovable to build a minimal functional version with a real back-end. Sent it to fifteen beta users.</li>
+  <li><strong>Week 2:</strong> Real usage data and async feedback via Dovetail. Used Claude to synthesise the feedback into a clear PRD. Walked into the roadmap review with a validated concept, real usage data, and a polished one-pager.</li>
+</ul>
+
+<p>That used to take six to eight weeks. It took ten days.</p>
+
+<h2>One thing I've learned the hard way</h2>
+
+<p>Early on, I tried to fully automate my research synthesis &mdash; piping outputs from one tool into another without reading them carefully. It produced faster garbage. The value of AI in this workflow is not removing your judgement from the loop. It's clearing enough space in your day that you can actually apply that judgement where it matters.</p>
+
+<p>AI tools amplify the PM you already are. If your research is shallow, you'll synthesise shallow research faster. If your prototypes don't reflect real user problems, you'll build non-solutions faster. The cycle compresses &mdash; but the quality of thinking behind it still depends entirely on you.</p>
+
+<p>What's shifted for me is where my time goes. Less of it on the mechanical parts &mdash; research aggregation, component scaffolding, writing first drafts &mdash; and more of it on the parts that actually require being a PM: talking to users, arguing about tradeoffs, deciding what not to build. That's the unlock. And honestly, it's made the job more interesting, not less.</p>
+
+</article>
+
+<!-- FOOTER -->
+<div class="article-footer">
+  <a href="../index.html#writing" class="btn-back">
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M6.75 15.75L3 12m0 0l3.75-3.75M3 12h18"/></svg>
+    All Posts
+  </a>
+  <div class="share-links">
+    <a href="https://twitter.com/intent/tweet?text=How+I+Use+AI+Across+My+Entire+PM+Workflow&url=" target="_blank" rel="noopener" class="share-chip">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+      Share
+    </a>
+    <a href="https://www.linkedin.com/sharing/share-offsite/?url=" target="_blank" rel="noopener" class="share-chip">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+      LinkedIn
+    </a>
+  </div>
+</div>
+
+<footer><p>&copy; 2026 Devika Naik. Crafted in New York.</p></footer>
+
+<script>
+  var mainNav = document.getElementById('mainNav');
+  window.addEventListener('scroll', function() { mainNav.classList.toggle('scrolled', window.scrollY > 40); });
+</script>
+</body>
+</html>
