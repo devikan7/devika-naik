@@ -1,25 +1,26 @@
 # devika-naik
 
-Personal site for Devika Naik. Single static page (`index.html`) plus essays
-under `writing/`. Published with GitHub Pages at https://devika.nyc
-(custom domain set in `CNAME`; HTTPS enforced).
+Personal site for Devika Naik — a single static page (`index.html`).
+Published with GitHub Pages at https://devika.nyc (custom domain in `CNAME`,
+HTTPS enforced).
 
-## Adding an article
+## Writing
 
-1. Copy `writing/_template.html` to `writing/your-slug.html`.
-2. Fill in the title, description, and body — the template lists every
-   available block.
-3. Fill in the SEO block at the top (SLUG / TITLE / DESCRIPTION / date).
-4. Link it from the Writing section of `index.html`.
-5. Add the new URL to `sitemap.xml`.
+Entries in the Writing section link out to Medium
+(`devika-naik.medium.com`) and open in a new tab. To add one, drop a `<p>`
+into that section of `index.html`:
 
-Every article shares one stylesheet, `writing/article.css`. Editing that file
-restyles all articles at once; individual article files carry no `<style>` tag.
+```html
+<p>Article Title -
+<a href="https://devika-naik.medium.com/..." target="_blank" rel="noopener noreferrer">Read it</a></p>
+```
+
+Use a plain hyphen before "Read it", not an em dash.
 
 ## SEO
 
-Each page carries its own canonical URL, OpenGraph + Twitter Card tags, and
-JSON-LD (`Person` on the home page, `BlogPosting` on articles). `robots.txt`
-points crawlers at `sitemap.xml`. Social/share image is `images/devika.jpg`.
-To get pages into Google, verify the domain in Google Search Console and
-submit `https://devika.nyc/sitemap.xml`.
+`index.html` carries a canonical URL, OpenGraph + Twitter Card tags, and
+`Person` JSON-LD. `robots.txt` points crawlers at `sitemap.xml` (the home
+page only). Social/share image is `images/devika.jpg`. To get into Google,
+verify the domain in Google Search Console and submit
+`https://devika.nyc/sitemap.xml`.
