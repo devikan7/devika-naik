@@ -1,7 +1,7 @@
 # devika-naik
 
 Personal site for Devika Naik. Single static page (`index.html`) plus essays
-under `writing/`. Published with GitHub Pages at https://devikanaik.com
+under `writing/`. Published with GitHub Pages at https://devika.nyc
 (custom domain set in `CNAME`; HTTPS enforced).
 
 ## Adding an article
@@ -22,4 +22,4 @@ Each page carries its own canonical URL, OpenGraph + Twitter Card tags, and
 JSON-LD (`Person` on the home page, `BlogPosting` on articles). `robots.txt`
 points crawlers at `sitemap.xml`. Social/share image is `images/devika.jpg`.
 To get pages into Google, verify the domain in Google Search Console and
-submit `https://devikanaik.com/sitemap.xml`.
+submit `https://devika.nyc/sitemap.xml`.

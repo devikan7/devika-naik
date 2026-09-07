@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://devikanaik.com/sitemap.xml
+Sitemap: https://devika.nyc/sitemap.xml
